@@ -30,11 +30,11 @@ from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOC
     OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST
 
 
-# logger = logging.getLogger('discord')
-# logger.setLevel(logging.DEBUG)
-# handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-# handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-# logger.addHandler(handler)
+ logger = logging.getLogger('discord')
+ logger.setLevel(logging.DEBUG)
+ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+ logger.addHandler(handler)
 
 def strfdelta(tdelta):
     t = {'days': 'days',
@@ -628,28 +628,28 @@ class AutoMod(discord.Client):
         if not self.uber_ready: return
         if message and not log_flag:
             return
-            # if message.server.id in self.server_index:
-            #     config = self.server_index[message.server.id]
-            # else:
-            #     return
-            # if not self.server_index[message.server.id][10][1]:
-            #     return
-            # if not self.server_index[message.server.id][9]:
-            #     return
-            # if message.channel.id in config[12]:
-            #     return
-            # channel_trimmed = message.channel.name.upper()[:10]
-            # if len(message.clean_content) > 1800:
-            #     msg = '**`[{}]` __{}|__ {}:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"), channel_trimmed, message.author.name, message.clean_content)
-            #     split = [msg[i:i + 1800] for i in range(0, len(msg), 1800)]
-            #     for x in split:
-            #         await self.safe_send_message(discord.Object(id=config[9]), x)
-            # else:
-            #     msg = '**`[{}]` __{}|__ {} uploaded an attachment:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"), channel_trimmed, message.author.name, message.attachments[0]['url'])
-            #     await self.safe_send_message(discord.Object(id=config[9]), msg)
-            #     if message.clean_content != '':
-            #         msg = '**`[{}]` __{}|__ {}:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"), channel_trimmed, message.author.name, message.clean_content)
-            #         await self.safe_send_message(discord.Object(id=config[9]), msg)
+             if message.server.id in self.server_index:
+                 config = self.server_index[message.server.id]
+             else:
+                 return
+             if not self.server_index[message.server.id][10][1]:
+                 return
+             if not self.server_index[message.server.id][9]:
+                 return
+             if message.channel.id in config[12]:
+                 return
+             channel_trimmed = message.channel.name.upper()[:10]
+             if len(message.clean_content) > 1800:
+                 msg = '**`[{}]` __{}|__ {}:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"), channel_trimmed, message.author.name, message.clean_content)
+                 split = [msg[i:i + 1800] for i in range(0, len(msg), 1800)]
+                 for x in split:
+                     await self.safe_send_message(discord.Object(id=config[9]), x)
+             else:
+                 msg = '**`[{}]` __{}|__ {} uploaded an attachment:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"), channel_trimmed, message.author.name, message.attachments[0]['url'])
+                 await self.safe_send_message(discord.Object(id=config[9]), msg)
+                 if message.clean_content != '':
+                     msg = '**`[{}]` __{}|__ {}:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"), channel_trimmed, message.author.name, message.clean_content)
+                     await self.safe_send_message(discord.Object(id=config[9]), msg)
         elif log_flag:
             if log_flag == 'join':
                 if member.server.id in self.server_index:
@@ -989,7 +989,7 @@ class AutoMod(discord.Client):
                     except:
                         raise CommandError('Unable to mute user defined:\n{}\n'.format(user.name))
                 if time:
-                    # self.server_index[message.server.id][13][message.author.id] = [float(time), datetime.utcnow()]
+                     self.server_index[message.server.id][13][message.author.id] = [float(time), datetime.utcnow()]
                     await asyncio.sleep(float(time))
                     for user in mentions:
                         muteeroles = user.roles
@@ -2626,128 +2626,128 @@ class AutoMod(discord.Client):
             self.action_dict['at_everyones'] += 1
 
         if message.server.id in self.server_index and 'LURK' in self.server_index[message.server.id]:
-        #     if message.author.id == self.config.master_id and message.content.startswith('{}eval'.format(self.config.command_prefix)):
-        #         result = None
-        #         try:
-        #             result = eval(message.content[len('{}eval'.format(self.config.command_prefix))+1:])
-        #         except Exception:
-        #             formatted_lines = traceback.format_exc().splitlines()
-        #             await self.safe_send_message(message.channel, '```py\n{}\n{}\n```'.format(formatted_lines[-1], '/n'.join(formatted_lines[4:-1])))
-        #
-        #         if asyncio.iscoroutine(result):
-        #             result = await result
-        #
-        #         if result:
-        #             await self.safe_send_message(message.channel, '```{}```'.format(result))
-        #         else:
-        #             await self.safe_send_message(message.channel, ':thumbsup:'.format(result))
-        #
-        #     if message.author.id == self.config.master_id and message.content.startswith('{}exec'.format(self.config.command_prefix)):
-        #         old_stdout = sys.stdout
-        #         redirected_output = sys.stdout = StringIO()
-        #
-        #         try:
-        #             exec(message.content[len('{}exec'.format(self.config.command_prefix))+1:])
-        #         except Exception:
-        #             formatted_lines = traceback.format_exc().splitlines()
-        #             await self.safe_send_message(message.channel, '```py\n{}\n{}\n```'.format(formatted_lines[-1], '\n'.join(formatted_lines[4:-1])))
-        #         finally:
-        #             sys.stdout = old_stdout
-        #
-        #         if redirected_output.getvalue():
-        #             await self.safe_send_message(message.channel, redirected_output.getvalue())
-        #         else:
-        #             await self.safe_send_message(message.channel,':thumbsup:')
-        #
-        #     if message.content.startswith('{}info'.format(self.config.command_prefix)):
-        #         await self.safe_send_message(message.channel,
-        #                                      'I was coded by SexualRhinoceros and am currently on v{} ! \nFor info on how to get my in your server, check out this link! '
-        #                                      '{}'.format(VERSION, DOCUMENTATION_FOR_BOT), expire_in=30)
-        #     if message.content.startswith('{}donate'.format(self.config.command_prefix)):
-        #         await self.safe_send_message(message.channel,
-        #                                      'Thanks for considering donating! Check out the Patreon here\n\t{}'.format(
-        #                                              RHINO_PATREON), expire_in=30)
-        #     if message.content.startswith('{}url'.format(self.config.command_prefix)):
-        #         await self.safe_send_message(message.channel,
-        #                                      'Here is my OAuth URL!:\n\n%s'
-        #                                      '' % discord.utils.oauth_url('170242612425392128',
-        #                                                                   permissions=discord.Permissions.all()),
-        #                                      expire_in=30)
-        #
-        #     if message.content.startswith('{}userinfo'.format(self.config.command_prefix)):
-        #         try:
-        #             user = None
-        #             join_str = None
-        #             message_content = message.clean_content[1 + len('{}userinfo'.format(self.config.command_prefix)):]
-        #             if message.mentions:
-        #                 user = message.mentions[0]
-        #                 join_str = user.joined_at.strftime("%c")
-        #             elif not message.mentions and message_content:
-        #                 if discord.utils.get(message.server.members, name=message_content):
-        #                     user = discord.utils.get(message.server.members, name=message_content)
-        #                     join_str = user.joined_at.strftime("%c")
-        #                 elif discord.utils.get(message.server.members, id=message_content):
-        #                     user = discord.utils.get(message.server.members, id=message_content)
-        #                     join_str = user.joined_at.strftime("%c")
-        #                 if not user:
-        #                     join_str = 'NOT IN SERVER'
-        #                     for servers in self.servers:
-        #                         if discord.utils.get(servers.members, name=message_content):
-        #                             user = discord.utils.get(servers.members, name=message_content)
-        #                         elif discord.utils.get(servers.members, id=message_content):
-        #                             user = discord.utils.get(servers.members, id=message_content)
-        #             elif not message_content:
-        #                 user = message.author
-        #                 join_str = user.joined_at.strftime("%c")
-        #             if not user:
-        #                 raise CommandError('Could not find user info on "%s"' % message_content)
-        #             await self.user_index_check(user)
-        #             await self.safe_send_message(message.channel,
-        #                     '```​          User: {}\n         Names: {}\n       Discrim: {}\n            ID: {}\n    Created At'
-        #             ': {}\n        Joined: {}\n     # of Bans: {}\n   Infractions: {}\nShared Servers: {}\n        Avatar: {} \n```'.format(
-        #                     clean_string(user.name), clean_string(', '.join(self.user_dict[user.id]['names'][-20:])),
-        #                     user.discriminator, user.id,
-        #                     snowflake_time(user.id).strftime("%c"), join_str,
-        #                     self.user_dict[user.id]['severs_banned_in'],
-        #                     self.user_dict[user.id]['actions_taken_against'],
-        #                     len([servers for servers in self.servers if discord.utils.get(servers.members,
-        #                                                                                              id=user.id)]),
-        #                     clean_string(user.avatar_url)
-        #                     )
-        #             )
-        #         except CommandError as e:
-        #             await self.safe_send_message(message.channel, '```\n%s\n```' % e.message)
-        #
-        #     if message.content.startswith('{}stats'.format(self.config.command_prefix)):
-        #         info_dict = {
-        #             'servers': 0,
-        #             'members': 0,
-        #             'actionstaken': self.action_dict['actions_taken'],
-        #             'starttime': datetime.utcnow() - self.start_time,
-        #             'commandsran': self.action_dict['commands_ran'],
-        #             'messagesdeleted': self.action_dict['messages_deleted'],
-        #             'messagesprocessed': self.action_dict['messages_processed'],
-        #             'messagessent': self.action_dict['messages_sent'],
-        #             'ateveryones': self.action_dict['at_everyones']
-        #         }
-        #         for server in self.servers:
-        #             info_dict['servers'] += 1
-        #             for member in server.members:
-        #                 info_dict['members'] += 1
-        #
-        #         await self.safe_send_message(message.channel,
-        #                                      'I have been running continuously for **{}**!\nI\'m currently in **{}** servers and can see '
-        #                                      '**{}** members in those servers.\n\nSince starting, I have seen **{}** messages, automatically taken **{}** moderation'
-        #                                      ' actions, sent **{}** messages, deleted **{}** messages, have had **{}** commands ran, and seen @\u200beveryone used **{}** times!'
-        #                                      '\n\n To get me on your server, PM me an invite link or go to **https://www.carbonitex.net/'
-        #                                      'discord/bots?rhino**'
-        #                                      ''.format(strfdelta(info_dict['starttime']), info_dict['servers'],
-        #                                                info_dict['members'],
-        #                                                info_dict['messagesprocessed'], info_dict['actionstaken'],
-        #                                                info_dict['messagesdeleted'], info_dict['messagessent'],
-        #                                                info_dict['commandsran'],
-        #                                                info_dict['ateveryones']),
-        #                                      expire_in=60)
+             if message.author.id == self.config.master_id and message.content.startswith('{}eval'.format(self.config.command_prefix)):
+                 result = None
+                 try:
+                     result = eval(message.content[len('{}eval'.format(self.config.command_prefix))+1:])
+                 except Exception:
+                     formatted_lines = traceback.format_exc().splitlines()
+                     await self.safe_send_message(message.channel, '```py\n{}\n{}\n```'.format(formatted_lines[-1], '/n'.join(formatted_lines[4:-1])))
+        
+                 if asyncio.iscoroutine(result):
+                     result = await result
+        
+                 if result:
+                     await self.safe_send_message(message.channel, '```{}```'.format(result))
+                 else:
+                     await self.safe_send_message(message.channel, ':thumbsup:'.format(result))
+        
+             if message.author.id == self.config.master_id and message.content.startswith('{}exec'.format(self.config.command_prefix)):
+                 old_stdout = sys.stdout
+                 redirected_output = sys.stdout = StringIO()
+        
+                 try:
+                     exec(message.content[len('{}exec'.format(self.config.command_prefix))+1:])
+                 except Exception:
+                     formatted_lines = traceback.format_exc().splitlines()
+                     await self.safe_send_message(message.channel, '```py\n{}\n{}\n```'.format(formatted_lines[-1], '\n'.join(formatted_lines[4:-1])))
+                 finally:
+                     sys.stdout = old_stdout
+        
+                 if redirected_output.getvalue():
+                     await self.safe_send_message(message.channel, redirected_output.getvalue())
+                 else:
+                     await self.safe_send_message(message.channel,':thumbsup:')
+        
+             if message.content.startswith('{}info'.format(self.config.command_prefix)):
+                 await self.safe_send_message(message.channel,
+                                              'I was coded by SexualRhinoceros and am currently on v{} ! \nFor info on how to get my in your server, check out this link! '
+                                              '{}'.format(VERSION, DOCUMENTATION_FOR_BOT), expire_in=30)
+             if message.content.startswith('{}donate'.format(self.config.command_prefix)):
+                 await self.safe_send_message(message.channel,
+                                              'Thanks for considering donating! Check out the Patreon here\n\t{}'.format(
+                                                      RHINO_PATREON), expire_in=30)
+             if message.content.startswith('{}url'.format(self.config.command_prefix)):
+                 await self.safe_send_message(message.channel,
+                                              'Here is my OAuth URL!:\n\n%s'
+                                              '' % discord.utils.oauth_url('170242612425392128',
+                                                                           permissions=discord.Permissions.all()),
+                                              expire_in=30)
+        
+             if message.content.startswith('{}userinfo'.format(self.config.command_prefix)):
+                 try:
+                     user = None
+                     join_str = None
+                     message_content = message.clean_content[1 + len('{}userinfo'.format(self.config.command_prefix)):]
+                     if message.mentions:
+                         user = message.mentions[0]
+                         join_str = user.joined_at.strftime("%c")
+                     elif not message.mentions and message_content:
+                         if discord.utils.get(message.server.members, name=message_content):
+                             user = discord.utils.get(message.server.members, name=message_content)
+                             join_str = user.joined_at.strftime("%c")
+                         elif discord.utils.get(message.server.members, id=message_content):
+                             user = discord.utils.get(message.server.members, id=message_content)
+                             join_str = user.joined_at.strftime("%c")
+                         if not user:
+                             join_str = 'NOT IN SERVER'
+                             for servers in self.servers:
+                                 if discord.utils.get(servers.members, name=message_content):
+                                     user = discord.utils.get(servers.members, name=message_content)
+                                 elif discord.utils.get(servers.members, id=message_content):
+                                     user = discord.utils.get(servers.members, id=message_content)
+                     elif not message_content:
+                         user = message.author
+                         join_str = user.joined_at.strftime("%c")
+                     if not user:
+                         raise CommandError('Could not find user info on "%s"' % message_content)
+                     await self.user_index_check(user)
+                     await self.safe_send_message(message.channel,
+                             '```​          User: {}\n         Names: {}\n       Discrim: {}\n            ID: {}\n    Created At'
+                     ': {}\n        Joined: {}\n     # of Bans: {}\n   Infractions: {}\nShared Servers: {}\n        Avatar: {} \n```'.format(
+                             clean_string(user.name), clean_string(', '.join(self.user_dict[user.id]['names'][-20:])),
+                             user.discriminator, user.id,
+                             snowflake_time(user.id).strftime("%c"), join_str,
+                             self.user_dict[user.id]['severs_banned_in'],
+                             self.user_dict[user.id]['actions_taken_against'],
+                             len([servers for servers in self.servers if discord.utils.get(servers.members,
+                                                                                                      id=user.id)]),
+                             clean_string(user.avatar_url)
+                             )
+                     )
+                 except CommandError as e:
+                     await self.safe_send_message(message.channel, '```\n%s\n```' % e.message)
+        
+             if message.content.startswith('{}stats'.format(self.config.command_prefix)):
+                 info_dict = {
+                     'servers': 0,
+                     'members': 0,
+                     'actionstaken': self.action_dict['actions_taken'],
+                     'starttime': datetime.utcnow() - self.start_time,
+                     'commandsran': self.action_dict['commands_ran'],
+                     'messagesdeleted': self.action_dict['messages_deleted'],
+                     'messagesprocessed': self.action_dict['messages_processed'],
+                     'messagessent': self.action_dict['messages_sent'],
+                     'ateveryones': self.action_dict['at_everyones']
+                 }
+                 for server in self.servers:
+                     info_dict['servers'] += 1
+                     for member in server.members:
+                         info_dict['members'] += 1
+        
+                 await self.safe_send_message(message.channel,
+                                              'I have been running continuously for **{}**!\nI\'m currently in **{}** servers and can see '
+                                              '**{}** members in those servers.\n\nSince starting, I have seen **{}** messages, automatically taken **{}** moderation'
+                                              ' actions, sent **{}** messages, deleted **{}** messages, have had **{}** commands ran, and seen @\u200beveryone used **{}** times!'
+                                              '\n\n To get me on your server, PM me an invite link or go to **https://www.carbonitex.net/'
+                                              'discord/bots?rhino**'
+                                              ''.format(strfdelta(info_dict['starttime']), info_dict['servers'],
+                                                        info_dict['members'],
+                                                        info_dict['messagesprocessed'], info_dict['actionstaken'],
+                                                        info_dict['messagesdeleted'], info_dict['messagessent'],
+                                                        info_dict['commandsran'],
+                                                        info_dict['ateveryones']),
+                                              expire_in=60)
             return
         if self.user in message.mentions:
             print('[{} : {}]{} says \'{}\''.format(message.server.name, message.channel.name, message.author.name,
@@ -3095,7 +3095,7 @@ class AutoMod(discord.Client):
                         await self.delete_message(message)
                         await self.add_roles(message.author, mutedrole)
                         await self.server_voice_state(message.author, mute=True)
-                        # self.server_index[message.server.id][13][message.author.id] = [0, None]
+                         self.server_index[message.server.id][13][message.author.id] = [0, None]
                         await self.safe_send_message(message.author,
                                                      'Your message `{}` has been deleted and you\'ve been muted for breaking the word filter on `{}`!'.format(
                                                              message.clean_content, message.server.name))
